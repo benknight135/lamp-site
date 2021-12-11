@@ -4,7 +4,6 @@ FROM gitpod/workspace-full
 RUN sudo apt update && \
     sudo apt install -y \
     lamp-server^ \
-    wordpress && \
     sudo rm -rf /var/lib/apt/lists/*
 
 CMD ["/bin/bash"]
