@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full
+FROM gitpod/workspace-base:latest
 
 # install development packages
 RUN sudo apt update && \
