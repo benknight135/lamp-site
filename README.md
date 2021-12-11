@@ -21,4 +21,5 @@ Deployed website is visible at [lampsite.live](https://lampsite.live)
 
 ## Useful info
 - Guide to local LAMP development: [link](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04)
-- Azsure docs on deploying lamp stack: [link](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/virtual-machines/linux/tutorial-lamp-stack.md)
+- Azure docs on creating PHP web app [link](https://docs.microsoft.com/en-us/azure/app-service/quickstart-php?pivots=platform-linux)
+- Azure docs on deploying lamp stack: [link](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/virtual-machines/linux/tutorial-lamp-stack.md)
