@@ -14,10 +14,8 @@ A “LAMP” stack is a group of open-source software that is typically installe
 ## Development
 See [development strategy](.github/DEVELOPMENT_STRATEGY.md) for more details on the development process for this repository. 
 
-See [release strategy](.github/RELEASE_STRATEGY.md) for details on how releases / deployments are handelling in this repository.
-
 ## Deployment
-This website will be deployed to Azsure automically.
+See [release strategy](.github/RELEASE_STRATEGY.md) for details on how releases / deployments are handelling in this repository.
 
 ## Useful info
 - Azsure docs on deploying lamp stack [here](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/virtual-machines/linux/tutorial-lamp-stack.md)
