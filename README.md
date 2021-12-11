@@ -17,6 +17,8 @@ See [development strategy](.github/DEVELOPMENT_STRATEGY.md) for more details on 
 ## Deployment
 See [release strategy](.github/RELEASE_STRATEGY.md) for details on how releases / deployments are handelling in this repository.
 
+Deployed website is visible at [lampsite.live](https://lampsite.live)
+
 ## Useful info
 - Guide to local LAMP development: [link](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04)
 - Azsure docs on deploying lamp stack: [link](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/virtual-machines/linux/tutorial-lamp-stack.md)
