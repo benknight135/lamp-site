@@ -11,6 +11,9 @@ A “LAMP” stack is a group of open-source software that is typically installe
 **M**ySQL database  
 **P**HP dynamic content processing  
 
+## Setup
+See [azure setup](azure-setup.md) for the steps to setup a new azure web app needed for deployment.
+
 ## Development
 See [development strategy](.github/DEVELOPMENT_STRATEGY.md) for more details on the development process for this repository. 
 
