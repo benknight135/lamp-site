@@ -32,3 +32,4 @@ Push website to azure remote
 git remote add azure https://<username>@<app-name>.scm.azurewebsites.net/<app-name>.git
 git push azure main
 ```
+*Note: This doesn't appear to work when running from gitpod workspace*
