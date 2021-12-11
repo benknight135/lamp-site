@@ -1,4 +1,4 @@
-# LAMP stack website
+# LAMP site
 Sample repository for developing and deploying LAMP stack website. 
 
 *WANING: This repository is actively being worked as a learning project so is subject to frequent changes and may contain broken code.*
