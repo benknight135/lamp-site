@@ -1,0 +1,51 @@
+name: Deployment
+
+# Only trigger on main branch pull request close events
+# used to deploy code after merging
+# Versioning is automatically generated when merging, this is created by detecting the branch prefix:
+# - 'major' prefix for major release (e.g. N.x.x)
+# - 'minor' or 'feature' prefix for minor release (e.g. x.N.x)
+# - 'patch' or 'bugfix' prefix for patch release (e.g. x.x.N)
+# - no prefix for prepatch release (e.g. x.x.x-N)
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+    
+env:
+  AZURE_WEBAPP_NAME: lampsite     # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'  # set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v2
+      # TODO test build
+      # Push deployment
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      # Merge branch into production
+      - name: Merge main -> prod
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: prod
+          github_token: ${{ github.token }}
+          message: merged ${{ steps.commit-vars.outputs.sha_short }}
+      # Merge main back to production
+      - name: Merge prod -> main
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: prod
+          target_branch: main
+          github_token: ${{ github.token }}
+          message: merged ${{ steps.commit-vars.outputs.sha_short }}
