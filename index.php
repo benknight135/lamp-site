@@ -16,27 +16,29 @@ $hello_msg = $hello->message();
 $hello_header = "<h1>$hello_msg</h1>";
 echo $hello_header;
 
-echo "<h3>\$_ENV['APP_DEBUG']: " . $_ENV['APP_DEBUG'] . "</h3>";
-echo "<h3>getenv('APP_DEBUG'): " . getenv("APP_DEBUG") . "</h3>";
-
-echo "<h3>\$_ENV['APPSETTING_APP_DEBUG']: " . $_ENV['APPSETTING_APP_DEBUG'] . "</h3>";
-echo "<h3>getenv('APPSETTING_APP_DEBUG'): " . getenv("APPSETTING_APP_DEBUG") . "</h3>";
-
-$envs = getenv();
-foreach ($envs as $key => $value) {
-    echo "<p>{$key} => {$value}</p>";
+if ($_ENV['APP_DEBUG'] == "true"){
+    echo "<h3>Debugging: enabled</h3>";
 }
 
-// // Setup connection to mysql server
-// $host = $_ENV['DB_HOST'];
-// $username = $_ENV['DB_USERNAME'];
-// $password = $_ENV['DB_PASSWORD'];
+// Setup connection to mysql server
+$host = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
 
-// // Create connection
-// $conn = new mysqli($host, $username, $password);
+echo "<h3>Server settings</h3>";
+echo "<p>Host: $host</p>";
+echo "<p>User: $username</p>";
+echo "<p>Pass: $password</p>";
 
-// // Check connection
-// if ($conn->connect_error) {
-// die("Connection failed: " . $conn->connect_error);
-// }
-// echo "<h2>Database connected successfully</h2>";
+if ($_ENV['APP_DEBUG'] == "true"){
+    // Create connection
+    $conn = new mysqli($host, $username, $password);
+
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+    echo "<h2>Database connected successfully</h2>";
+} else {
+    echo "<h2>Database not yet implimented</h2>";
+}
