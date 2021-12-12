@@ -14,7 +14,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       # Stop azre webapp
       - name: Stop WebApp
-      - run: |
+        run: |
           az webapp stop --name lampsite --resource-group lampsite-rg
 
   start-webapp:
@@ -28,5 +28,5 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       # Start azre webapp
       - name: Start WebApp
-      - run: |
+        run: |
           az webapp start --name lampsite --resource-group lampsite-rg
