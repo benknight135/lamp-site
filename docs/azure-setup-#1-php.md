@@ -30,6 +30,12 @@ Setup deployment branch
 az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DEPLOYMENT_BRANCH='main'
 ```
 
+Add app_debug setting to run different setup when developing
+```
+az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings APP_DEBUG='false'
+```
+*Php can load this value using $_ENV['APP_DEBUG']*
+
 ## Add remote
 *Run the following in a local clone of this repository*
 

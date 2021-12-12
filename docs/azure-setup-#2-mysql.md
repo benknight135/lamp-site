@@ -27,3 +27,14 @@ Configure database
 mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>.mysql.database.azure.com -P 3306 --execute="CREATE DATABASE <database-name>;CREATE USER '<db-user>' IDENTIFIED BY '<db-password>';GRANT ALL PRIVILEGES ON <database-name>.* TO '<db-user>';"
 ```
 *Note the [db-user] and [db-password] is a new user you are creating for modifying the database*
+
+## Setup azure app database settings
+Add database variables to setting to use azure database in production
+```
+az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_HOST='<mysql-server-name>.mysql.database.azure.com'
+
+az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_USERNAME='<db-user>'
+
+az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_PASSWORD='<db-password>'
+```
+*Php can load these values using $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']*
