@@ -26,4 +26,5 @@ tasks:
     command: |
       composer update
       test $? -eq 0 && clear || echo "Composer update failed"
+      mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" --execute="CREATE DATABASE $DB_DATABASE;"
       mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" $DB_DATABASE < $DB_DATABASE.sql
