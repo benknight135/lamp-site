@@ -24,9 +24,16 @@ jobs:
     steps:
       # Checkout code
       - uses: actions/checkout@v2
-      # TODO test build
+      # Setup environment
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.4"
+      - uses: "ramsey/composer-install@v1"
+      # Run Tests
+      - name: Tests
+        run: ./vendor/bin/phpunit
       # Push deployment
-      - name: 'Deploy to Azure WebApp'
+      - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}

@@ -1,4 +1,4 @@
-# Setup new Azure web app 
+# Setup new Azure PHP web app 
 
 Create deployment user
 ```
@@ -28,9 +28,10 @@ az webapp config appsettings set --name <app-name> --resource-group <resource-gr
 ```
 
 Push website to azure remote
-*Not actually needed as github action handeles deployment*
 ```
 git remote add azure https://<username>@<app-name>.scm.azurewebsites.net/<app-name>.git
 git push azure main
 ```
 *Note: This doesn't appear to work when running from gitpod workspace*
+
+Next step is to setup MySQL database using [this guide](docs/azure-mysql.md)
