@@ -37,25 +37,26 @@ echo "<p>Use SSL: $use_ssl</p>";
 echo "<p>SSL cert: $ssl_cert</p>";
 
 if ($use_ssl == "true") {
-    $certfile = fopen("/var/www/html/BaltimoreCyberTrustRoot.crt.pem", "w") or die("Unable to open file!");
+    $certfile = fopen("ssl.crt.pem", "w") or die("Unable to open file!");
     fwrite($certfile, $ssl_cert);
     fclose($certfile);
 }
 
 // Create connection
+echo "Started db connection<br>";
+$conn = mysqli_init();
+$timeout = 30;  /* thirty seconds for timeout */
 if ($use_ssl == "true") {
-    $conn = mysqli_init();
-    mysqli_ssl_set($conn,NULL,NULL, "/var/www/html/BaltimoreCyberTrustRoot.crt.pem", NULL, NULL);
-    mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306, MYSQLI_CLIENT_SSL);
-    if (mysqli_connect_errno($conn)) {
-        die('Failed to connect to MySQL: '.mysqli_connect_error());
-    }
+    $conn->options( MYSQLI_OPT_CONNECT_TIMEOUT, $timeout ) || die( 'mysqli_options croaked: ' . $conn->error );
+    mysqli_ssl_set($conn, NULL, NULL, "ssl.crt.pem", NULL, NULL);
+    mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306, NULL, MYSQLI_CLIENT_SSL);
 } else {
-    $conn = new mysqli($host, $username, $password);
+    mysqli_real_connect($conn, $host, $username, $password, $db_name);
 }
 
-// Check connection
-if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
+//If connection failed, show the error
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+} else {
+    echo "<h2>Database connected successfully</h2>";
 }
-echo "<h2>Database connected successfully</h2>";
