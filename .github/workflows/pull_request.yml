@@ -10,5 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - uses: actions/checkout@v2
-      # TODO test build
+      # Setup environment
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.4"
+      - uses: "ramsey/composer-install@v1"
+      # Run Tests
+      - name: Tests
+        run: ./vendor/bin/phpunit
