@@ -19,6 +19,13 @@ echo $hello_header;
 echo "<h3>\$_ENV['APP_DEBUG']: " . $_ENV['APP_DEBUG'] . "</h3>";
 echo "<h3>getenv('APP_DEBUG'): " . getenv("APP_DEBUG") . "</h3>";
 
+echo "<h3>\$_ENV['APPSETTING_APP_DEBUG']: " . $_ENV['APPSETTING_APP_DEBUG'] . "</h3>";
+echo "<h3>getenv('APPSETTING_APP_DEBUG'): " . getenv("APPSETTING_APP_DEBUG") . "</h3>";
+
+$envs = getenv();
+foreach ($envs as $key => $value) {
+    echo "<p>{$key} => {$value}</p>";
+}
 
 // // Setup connection to mysql server
 // $host = $_ENV['DB_HOST'];
