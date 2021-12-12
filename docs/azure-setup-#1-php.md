@@ -30,11 +30,6 @@ Setup deployment branch
 az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DEPLOYMENT_BRANCH='main'
 ```
 
-Create azure credentials for github actions
-```
-az ad sp create-for-rbac --name "<app-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/sites/<app-name> --sdk-auth
-```
-
 ## Add remote
 *Run the following in a local clone of this repository*
 
