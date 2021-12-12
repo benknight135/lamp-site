@@ -1,16 +1,31 @@
 # Add mySQL database to Azure web app
 
+## Azure
+*Run the following commands inside the Azure console.*
+
 Create mysql server
 ```
-az mysql server create --resource-group <resource-group> --name <mysql-server-name> --location "UK South" --admin-user <admin-user> --admin-password <admin-password> --sku-name B_Gen5_1
+az mysql flexible-server create  --resource-group <resource-group> --public-access <IP-Address>
 ```
+*Public IP is required to locally setup the database, get your public ip [here](https://ipinfo.io/ip)*
 
 Configure firewall
 ```
-az mysql server firewall-rule create --name allAzureIPs --server <mysql-server-name> --resource-group <resource-group> --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+az mysql flexible-server firewall-rule create --name allanyAzureIPs --server <mysql-server-name> --resource-group <resource-group> --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
 ```
 
-Configure database settings in web app
+## Setup Database
+*Run the following on your local machine*
+
+Connect to azure mysql database
 ```
-az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_HOST="<mysql-server-name>.mysql.database.azure.com" DB_DATABASE="sampledb" DB_USERNAME="phpappuser@<mysql-server-name>" DB_PASSWORD="MySQLAzure2017" MYSQL_SSL="true"
+mysql -u <admin-user> -h <mysql-server-name>.mysql.database.azure.com -P 3306 -p
+```
+
+Inside the mysql console enter the following commands
+```
+CREATE DATABASE sampledb;
+CREATE USER '<admin-user>' IDENTIFIED BY '<admin-password>';
+GRANT ALL PRIVILEGES ON sampledb.* TO '<admin-user>';
+quit
 ```
