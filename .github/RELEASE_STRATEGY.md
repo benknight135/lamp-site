@@ -2,7 +2,7 @@
 This repository uses [GitLab Flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html) strategy.
 
 ## Deployment
-App is deployed to Azsure automically on new releases (coming soon).
+App is deployed to Azsure automically on new releases.
 
 ## Branches
 This repository has three permanent branches: 'main', 'prod', and 'docs'.
