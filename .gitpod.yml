@@ -4,3 +4,10 @@ image:
 ports:
   - port: 8000
     onOpen: open-preview
+
+tasks:
+  - name: Setup environment
+    init: |
+      echo SQL_NAME="localhost" > web/.env
+      echo SQL_USER="root" >> web/.env
+      echo SQL_PASSWORD="" >> web/.env

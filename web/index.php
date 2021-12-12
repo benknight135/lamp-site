@@ -1,10 +1,18 @@
 <?php
-require '../vendor/autoload.php';
+declare(strict_types=1);
+require_once('../vendor/autoload.php');
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+echo $_ENV['SQL_SERVER'] . "\n";
+echo $_SERVER['SQL_SERVER'] . "\n";
 
 $hello = new LampSite\Hello();
 $hello_msg = $hello->message();
 $hello_header = "<h1>$hello_msg</h1>";
 echo $hello_header;
+
 
 // $servername = "localhost";
 // $username = "root";
