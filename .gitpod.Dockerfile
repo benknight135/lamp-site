@@ -17,7 +17,7 @@ RUN add-apt-repository ppa:ondrej/php && \
     php7.4-sqlite3 \
     php7.4-tokenizer \
     php7.4-xml \
-    php7.4-zip \
+    php7.4-zip && \
     update-alternatives --set php /usr/bin/php7.4
 
 USER gitpod
