@@ -24,5 +24,6 @@ az mysql flexible-server firewall-rule create --rule-name allanyAzureIPs --name 
 
 Configure database
 ```
-mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>.mysql.database.azure.com -P 3306 --execute="CREATE DATABASE <database-name>;CREATE USER '<app-user>' IDENTIFIED BY '<app-password>';GRANT ALL PRIVILEGES ON <database-name>.* TO '<app-user>';"
+mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>.mysql.database.azure.com -P 3306 --execute="CREATE DATABASE <database-name>;CREATE USER '<db-user>' IDENTIFIED BY '<db-password>';GRANT ALL PRIVILEGES ON <database-name>.* TO '<db-user>';"
 ```
+*Note the [db-user] and [db-password] is a new user you are creating for modifying the database*
