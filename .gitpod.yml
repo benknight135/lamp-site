@@ -25,6 +25,7 @@ tasks:
       echo DB_PASSWORD=$DB_PASSWORD >> web/.env
     command: |
       composer update
-      test $? -eq 0 && clear || echo "Composer update failed"
+      test $? -eq 0 && clear || echo "composer update failed"
       mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" --execute="CREATE DATABASE $DB_DATABASE;"
       mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" $DB_DATABASE < $DB_DATABASE.sql
+      test $? -eq 0 && clear || echo "mysql init failed"
