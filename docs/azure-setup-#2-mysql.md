@@ -5,7 +5,7 @@
 
 Create mysql server
 ```
-az mysql flexible-server create  --resource-group <resource-group> --public-access <IP-Address>
+az mysql flexible-server create --name <mysql-server-name> --resource-group <resource-group> --public-access <IP-Address> --admin-user <admin-user> --admin-password <admin-password>
 ```
 *Public IP is required to locally setup the database, get your public ip [here](https://ipinfo.io/ip)*
 
