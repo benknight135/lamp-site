@@ -1,16 +1,29 @@
 # Add mySQL database to Azure web app
 
+## Azure
+*Run the following commands inside the Azure console.*
+
 Create mysql server
 ```
-az mysql server create --resource-group <resource-group> --name <mysql-server-name> --location "UK South" --admin-user <admin-user> --admin-password <admin-password> --sku-name B_Gen5_1
+az mysql flexible-server create --name <mysql-server-name> --resource-group <resource-group> --admin-user <admin-user> --admin-password <admin-password>
 ```
 
-Configure firewall
+Configure firewall for local machine  
+*Public IP is required to locally setup the database, get your public ip [here](https://ipinfo.io/ip)*
 ```
-az mysql server firewall-rule create --name allAzureIPs --server <mysql-server-name> --resource-group <resource-group> --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+az mysql flexible-server firewall-rule create --rule-name <local-machine-rule-name> --name <mysql-server-name> --resource-group <resource-group> --start-ip-address <IP-Address> --end-ip-address <IP-Address>
 ```
 
-Configure database settings in web app
+Configure firewall for azure app services
 ```
-az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_HOST="<mysql-server-name>.mysql.database.azure.com" DB_DATABASE="sampledb" DB_USERNAME="phpappuser@<mysql-server-name>" DB_PASSWORD="MySQLAzure2017" MYSQL_SSL="true"
+az mysql flexible-server firewall-rule create --rule-name allanyAzureIPs --name <mysql-server-name> --resource-group <resource-group> --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
 ```
+
+## Setup Database
+*Run the following in a local clone of this repository*
+
+Configure database
+```
+mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>.mysql.database.azure.com -P 3306 --execute="CREATE DATABASE <database-name>;CREATE USER '<db-user>' IDENTIFIED BY '<db-password>';GRANT ALL PRIVILEGES ON <database-name>.* TO '<db-user>';"
+```
+*Note the [db-user] and [db-password] is a new user you are creating for modifying the database*

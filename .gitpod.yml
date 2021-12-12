@@ -4,3 +4,28 @@ image:
 ports:
   - port: 8000
     onOpen: open-preview
+
+tasks:
+  - name: Setup environment
+    init: |
+      APP_ENV="local"
+      APP_DEBUG="true"
+      DB_CONNECTION="mysql"
+      DB_HOST="localhost"
+      DB_DATABASE="lampsitedb"
+      DB_USERNAME="root"
+      DB_PASSWORD=""
+
+      echo APP_ENV=$APP_ENV > web/.env
+      echo APP_DEBUG=$APP_DEBUG >> web/.env
+      echo DB_CONNECTION=$DB_CONNECTION >> web/.env
+      echo DB_HOST=$DB_HOST >> web/.env
+      echo DB_DATABASE=$DB_DATABASE >> web/.env
+      echo DB_USERNAME=$DB_USERNAME >> web/.env
+      echo DB_PASSWORD=$DB_PASSWORD >> web/.env
+    command: |
+      composer update
+      test $? -eq 0 && clear || echo "composer update failed"
+      mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" --execute="CREATE DATABASE $DB_DATABASE;"
+      mysql --user="$DB_USERNAME" --password="$DB_PASSWORD" $DB_DATABASE < $DB_DATABASE.sql
+      test $? -eq 0 && clear || echo "mysql init failed"
