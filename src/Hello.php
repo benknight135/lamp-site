@@ -10,6 +10,6 @@ class Hello
      */
     public function message()
     {
-        return "hello world!";
+        return "hello world";
     }
 }
