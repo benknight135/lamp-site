@@ -20,17 +20,9 @@ az mysql flexible-server firewall-rule create --rule-name allanyAzureIPs --name 
 ```
 
 ## Setup Database
-*Run the following on your local machine*
+*Run the following in a local clone of this repository*
 
-Connect to azure mysql database
+Configure database
 ```
-mysql -u <admin-user> -h <mysql-server-name>.mysql.database.azure.com -P 3306 -p
-```
-
-Inside the mysql console enter the following commands
-```
-CREATE DATABASE <database-name>;
-CREATE USER '<admin-user>' IDENTIFIED BY '<admin-password>';
-GRANT ALL PRIVILEGES ON <database-name>.* TO '<admin-user>';
-quit
+mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>.mysql.database.azure.com -P 3306 --execute="CREATE DATABASE <database-name>;CREATE USER '<app-user>' IDENTIFIED BY '<app-password>';GRANT ALL PRIVILEGES ON <database-name>.* TO '<app-user>';"
 ```
