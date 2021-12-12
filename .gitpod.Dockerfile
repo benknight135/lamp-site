@@ -1,5 +1,12 @@
 FROM gitpod/workspace-mysql
 
+USER root
+# Downgrade to php v7.4
+RUN add-apt-repository ppa:ondrej/php && \
+    install-packages php7.4 && \
+    update-alternatives --set php /usr/bin/php7.4
+
+USER gitpod
 # update composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     HASH="$(wget -q -O - https://composer.github.io/installer.sig)" && \
