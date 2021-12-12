@@ -24,6 +24,7 @@ if ($_ENV['APP_DEBUG'] == "true"){
 $host = $_ENV['DB_HOST'];
 $username = $_ENV['DB_USERNAME'];
 $password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_DATABASE'];
 $use_ssl = $_ENV['MYSQL_SSL'];
 $ssl_cert = $_ENV['MYSQL_SSL_CERT'];
 
@@ -31,6 +32,7 @@ echo "<h3>Server settings</h3>";
 echo "<p>Host: $host</p>";
 echo "<p>User: $username</p>";
 echo "<p>Pass: $password</p>";
+echo "<p>Database: $db_name</p>";
 echo "<p>Use SSL: $use_ssl</p>";
 echo "<p>SSL cert: $ssl_cert</p>";
 
@@ -40,15 +42,20 @@ if ($use_ssl == "true") {
     fclose($certfile);
 }
 
-if ($_ENV['APP_DEBUG'] == "true"){
-    // Create connection
-    $conn = new mysqli($host, $username, $password);
-
-    // Check connection
-    if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Create connection
+if ($use_ssl == "true") {
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn,NULL,NULL, "/var/www/html/BaltimoreCyberTrustRoot.crt.pem", NULL, NULL);
+    mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306, MYSQLI_CLIENT_SSL);
+    if (mysqli_connect_errno($conn)) {
+        die('Failed to connect to MySQL: '.mysqli_connect_error());
     }
-    echo "<h2>Database connected successfully</h2>";
 } else {
-    echo "<h2>Database not yet implimented</h2>";
+    $conn = new mysqli($host, $username, $password);
 }
+
+// Check connection
+if ($conn->connect_error) {
+die("Connection failed: " . $conn->connect_error);
+}
+echo "<h2>Database connected successfully</h2>";
