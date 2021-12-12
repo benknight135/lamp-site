@@ -31,10 +31,8 @@ mysql --user="<admin-user>" --password="<admin-password>" -h <mysql-server-name>
 ## Setup azure app database settings
 Add database variables to setting to use azure database in production
 ```
-az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_HOST='<mysql-server-name>.mysql.database.azure.com'
-
-az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_USERNAME='<db-user>'
-
-az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_PASSWORD='<db-password>'
+az webapp config appsettings set --name <app-name> --resource-group <resource-group> --settings DB_HOST='<mysql-server-name>.mysql.database.azure.com' DB_USERNAME='<db-user>' DB_PASSWORD='<db-password>' MYSQL_SSL='true' MYSQL_SSL_CERT=<cert>
 ```
-*Php can load these values using $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']*
+*Php can load these values using $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['MYSQL_SSL']*
+
+*[cert] should be the contents of the BaltimoreCyberTrustRoot.crt.pem file.*
