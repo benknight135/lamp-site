@@ -3,6 +3,9 @@ Sample repository for developing and deploying LAMP stack website.
 
 *WANING: This repository is in active development so is subject to frequent changes and may contain broken code.*
 
+![Website](https://img.shields.io/website?down_color=red&down_message=down&up_color=success&up_message=live&url=http%3A%2F%2Fwww.lampsite.live%2F)
+[![Deployment](https://github.com/benknight135/lamp-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/benknight135/lamp-site/actions/workflows/deploy.yml)
+
 ## What is LAMP?
 A “LAMP” stack is a group of open-source software that is typically installed together to enable a server to host dynamic websites and web apps.
 
