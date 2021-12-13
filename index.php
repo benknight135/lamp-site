@@ -43,7 +43,7 @@ echo "<p>Pass: $password</p>";
 echo "<p>Database: $db_name</p>";
 
 // Create connection
-$conn = new mysqli($server, $username, $password, $db);
+$conn = new mysqli($host, $username, $password, $db_name);
 if ($mysqli -> connect_errno) {
   echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
 } else {

@@ -8,25 +8,19 @@ ports:
 tasks:
   - name: Setup environment
     init: |
-      APP_ENV="local"
       APP_DEBUG="true"
       DB_CONNECTION="mysql"
       DB_HOST="localhost"
       DB_DATABASE="lampsitedb"
       DB_USERNAME="root"
       DB_PASSWORD=""
-      MYSQL_SSL="false"
-      MYSQL_SSL_CERT=""
 
-      echo APP_ENV=$APP_ENV > .env
-      echo APP_DEBUG=$APP_DEBUG >> .env
+      echo APP_DEBUG=$APP_DEBUG > .env
       echo DB_CONNECTION=$DB_CONNECTION >> .env
       echo DB_HOST=$DB_HOST >> .env
       echo DB_DATABASE=$DB_DATABASE >> .env
       echo DB_USERNAME=$DB_USERNAME >> .env
       echo DB_PASSWORD=$DB_PASSWORD >> .env
-      echo MYSQL_SSL=$MYSQL_SSL >> .env
-      echo MYSQL_SSL_CERT=$MYSQL_SSL_CERT >> .env
     command: |
       composer update
       test $? -eq 0 && clear || echo "composer update failed"
