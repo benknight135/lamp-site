@@ -1,4 +1,4 @@
-name: Deployment (Azure)
+name: Deployment
 
 # Only trigger on main branch pull request close events
 # used to deploy code after merging
@@ -11,10 +11,6 @@ on:
   pull_request:
     branches: [ main ]
     types: [ closed ]
-    
-env:
-  AZURE_WEBAPP_NAME: lampsite
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
   deploy:
@@ -32,13 +28,12 @@ jobs:
       # Run Tests
       - name: Tests
         run: ./vendor/bin/phpunit
-      # Push deployment
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
       # Merge branch into production
       - name: Merge main -> prod
         uses: devmasx/merge-branch@master
