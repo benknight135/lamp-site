@@ -1,4 +1,4 @@
-name: Deployment
+name: Deployment (Azure)
 
 # Only trigger on main branch pull request close events
 # used to deploy code after merging
