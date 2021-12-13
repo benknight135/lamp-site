@@ -12,7 +12,7 @@ A “LAMP” stack is a group of open-source software that is typically installe
 **P**HP dynamic content processing  
 
 ## Setup
-See [azure setup](docs/azure-setup-#1-php.md) for steps to create a new azure web app needed for deployment.
+See [heroku setup](docs/heroku-setup.md) for steps to host web app deployment.
 
 ## Development
 See [development strategy](.github/DEVELOPMENT_STRATEGY.md) for more details on the development process for this repository. 
