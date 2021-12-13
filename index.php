@@ -36,12 +36,6 @@ if ($_ENV['APP_DEBUG'] == "true"){
   $db_name = substr($url["path"], 1);
 }
 
-echo "<h3>Server settings</h3>";
-echo "<p>Host: $host</p>";
-echo "<p>User: $username</p>";
-echo "<p>Pass: $password</p>";
-echo "<p>Database: $db_name</p>";
-
 // Create connection
 $conn = new mysqli($host, $username, $password, $db_name);
 if ($mysqli -> connect_errno) {
