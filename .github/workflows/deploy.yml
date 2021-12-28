@@ -7,14 +7,13 @@ on:
     branches: [ main ]
     types: [ closed ]
 
-
 env:
   APP_DEBUG: true
   DB_CONNECTION: mysql
   DB_HOST: localhost
   DB_DATABASE: lampsitedb
   DB_USERNAME: root
-  DB_PASSWORD: ""
+  DB_PASSWORD: root
 
 jobs:
   deploy:

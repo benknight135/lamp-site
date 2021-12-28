@@ -11,7 +11,7 @@ env:
   DB_HOST: localhost
   DB_DATABASE: lampsitedb
   DB_USERNAME: root
-  DB_PASSWORD: ""
+  DB_PASSWORD: root
 
 jobs:
   build:
