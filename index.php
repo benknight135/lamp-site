@@ -45,11 +45,11 @@ if ($app_debug === true){
       throw new Exception("Missing 'user' in database url");
     }
     $db_user = $url["user"];
-    if (!array_key_exists('user', $password)){
-      throw new Exception("Missing 'password' in database url");
+    if (!array_key_exists('pass', $url)){
+      throw new Exception("Missing 'pass' in database url");
     }
     $db_pass = $url["pass"];
-    if (!array_key_exists('user', $path)){
+    if (!array_key_exists('path', $url)){
       throw new Exception("Missing 'path' in database url");
     }
     $db_name = substr($url["path"], 1);
