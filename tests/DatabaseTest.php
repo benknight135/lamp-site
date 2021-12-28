@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+require_once('vendor/autoload.php');
+
 use LampSite\Database;
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +14,9 @@ class DatabaseTest extends TestCase
     private $database;
 
     public function setUp(): void {
+        // TODO: find better way to load this file
+        // this is needed as .env file loading doesn't work in
+        // github actions???? 
         $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
         $dotenv->load();
         error_log( print_r($_ENV, TRUE) );
