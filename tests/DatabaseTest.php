@@ -12,10 +12,11 @@ class DatabaseTest extends TestCase
 
     public function setUp(): void {
         error_log( print_r($_ENV, TRUE) );
-        $db_host = $_ENV["DB_HOST"];
-        $db_user = $_ENV["DB_USERNAME"];
-        $db_pass = $_ENV["DB_PASSWORD"];
-        $db_name = $_ENV["DB_DATABASE"];
+        error_log( print_r($_SERVER, TRUE) );
+        $db_host = $_SERVER["DB_HOST"];
+        $db_user = $_SERVER["DB_USERNAME"];
+        $db_pass = $_SERVER["DB_PASSWORD"];
+        $db_name = $_SERVER["DB_DATABASE"];
         $this->database = new Database(
             $db_host, $db_user, $db_pass, $db_name);
     }
