@@ -8,11 +8,12 @@ use PHPUnit\Framework\TestCase;
  */
 class DatabaseTest extends TestCase
 {
-    protected $database;
+    private $database;
 
     public function setUp(): void {
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
         $dotenv->load();
+        error_log( print_r($_ENV, TRUE) );
         $db_host = $_ENV["DB_HOST"];
         $db_user = $_ENV["DB_USERNAME"];
         $db_pass = $_ENV["DB_PASSWORD"];
