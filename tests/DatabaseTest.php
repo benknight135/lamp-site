@@ -11,9 +11,6 @@ class DatabaseTest extends TestCase
     private $database;
 
     public function setUp(): void {
-        // TODO: find better way to load this file
-        // this is needed as .env file loading doesn't work in
-        // github actions???? 
         error_log( print_r($_ENV, TRUE) );
         $db_host = $_ENV["DB_HOST"];
         $db_user = $_ENV["DB_USERNAME"];
