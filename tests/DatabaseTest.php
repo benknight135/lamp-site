@@ -11,8 +11,7 @@ class DatabaseTest extends TestCase
     private $database;
 
     public function setUp(): void {
-        error_log( print_r($_ENV, TRUE) );
-        error_log( print_r($_SERVER, TRUE) );
+        // TODO find out why $_ENV doesn't work here
         $db_host = $_SERVER["DB_HOST"];
         $db_user = $_SERVER["DB_USERNAME"];
         $db_pass = $_SERVER["DB_PASSWORD"];
