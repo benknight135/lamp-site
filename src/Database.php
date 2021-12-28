@@ -20,6 +20,7 @@ class Database
             // .env is missing when in production environment
             error_log("Missing .env file. Assuming production environment.", 0);
         }
+        error_log($_ENV['APP_DEBUG']);
         if (!array_key_exists('APP_DEBUG', $_ENV)){
             throw new \Exception("Missing APP_DEBUG environment variable");
         }
