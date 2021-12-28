@@ -1,7 +1,7 @@
 # LAMP Site
 Sample repository for developing and deploying LAMP stack website. 
 
-*WARNING: This repository is in active development so is subject to frequent changes and may contain broken code.*
+***WARNING: This repository is in active development so is subject to frequent changes and may contain broken code.***
 
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.lampsite.live)
 [![Deployment](https://github.com/benknight135/lamp-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/benknight135/lamp-site/actions/workflows/deploy.yml)
