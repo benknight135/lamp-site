@@ -24,7 +24,7 @@ jobs:
       - uses: "shivammathur/setup-php@v2"
         with:
           php-version: "7.4"
-          ini-values: variables_order=EGPCS
+          ini-values: variables_order=GPCS
       - uses: "ramsey/composer-install@v1"
       - name: Setup .env
         run: |
