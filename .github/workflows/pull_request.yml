@@ -46,4 +46,5 @@ jobs:
       - name: PHP Unit Tests
         run: |
           ls -a .
+          cat .env
           ./vendor/bin/phpunit
