@@ -4,7 +4,7 @@ use LampSite\Hello;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Hello
+ * @covers LampSite\Hello
  */
 class HelloTest extends TestCase
 {
