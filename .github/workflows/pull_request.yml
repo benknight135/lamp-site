@@ -45,7 +45,4 @@ jobs:
           mysql --user="${{ env.DB_USERNAME }}" --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < ${{ env.DB_DATABASE }}.sql
       # Run Tests
       - name: PHP Unit Tests
-        run: |
-          ls -a .
-          cat .env
-          vendor/bin/phpunit
+        run: ./vendor/bin/phpunit
