@@ -19,7 +19,7 @@ if (!array_key_exists('APP_DEBUG', $_ENV)){
     throw new Exception("Missing APP_DEBUG environment variable");
 }
 $app_debug = $_ENV['APP_DEBUG'];
-if ($app_debug){
+if ($app_debug == true){
     // load database variable from .env
     $dotenv->required([
         "DB_HOST", "DB_USERNAME",
