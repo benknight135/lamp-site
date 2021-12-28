@@ -2,15 +2,19 @@ name: Deployment
 
 # Only trigger on main branch pull request close events
 # used to deploy code after merging
-# Versioning is automatically generated when merging, this is created by detecting the branch prefix:
-# - 'major' prefix for major release (e.g. N.x.x)
-# - 'minor' or 'feature' prefix for minor release (e.g. x.N.x)
-# - 'patch' or 'bugfix' prefix for patch release (e.g. x.x.N)
-# - no prefix for prepatch release (e.g. x.x.x-N)
 on:
   pull_request:
     branches: [ main ]
     types: [ closed ]
+
+
+env:
+  APP_DEBUG: true
+  DB_CONNECTION: mysql
+  DB_HOST: localhost
+  DB_DATABASE: lampsitedb
+  DB_USERNAME: root
+  DB_PASSWORD: ""
 
 jobs:
   deploy:
@@ -25,9 +29,27 @@ jobs:
         with:
           php-version: "7.4"
       - uses: "ramsey/composer-install@v1"
+      - name: Setup .env
+        run: |
+          echo APP_DEBUG=${{ env.APP_DEBUG }} > .env
+          echo DB_CONNECTION=${{ env.DB_CONNECTION }} >> .env
+          echo DB_HOST=${{ env.DB_HOST }} >> .env
+          echo DB_DATABASE=${{ env.DB_DATABASE }} >> .env
+          echo DB_USERNAME=${{ env.DB_USERNAME }} >> .env
+          echo DB_PASSWORD=${{ env.DB_PASSWORD }} >> .env
+      # Install composer packages
+      - name: Composer install
+        run: composer install
+      # Create database
+      - name: Setup mysql
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql --user="${{ env.DB_USERNAME }}" --password="${{ env.DB_PASSWORD }}" --execute="CREATE DATABASE ${{ env.DB_DATABASE }};"
+          mysql --user="${{ env.DB_USERNAME }}" --password="${{ env.DB_PASSWORD }}" ${{ env.DB_DATABASE }} < ${{ env.DB_DATABASE }}.sql
       # Run Tests
       - name: Tests
         run: ./vendor/bin/phpunit
+      # Deploy
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
