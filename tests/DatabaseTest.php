@@ -11,7 +11,7 @@ class DatabaseTest extends TestCase
     private $database;
 
     public function setUp(): void {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
         $dotenv->load();
         error_log( print_r($_ENV, TRUE) );
         $db_host = $_ENV["DB_HOST"];
