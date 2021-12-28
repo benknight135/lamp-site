@@ -47,4 +47,4 @@ jobs:
         run: |
           ls -a .
           cat .env
-          ./vendor/bin/phpunit
+          vendor/bin/phpunit

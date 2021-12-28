@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="phpunit.php"
          cacheResultFile=".phpunit.cache/test-results"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
@@ -11,10 +11,12 @@
          convertDeprecationsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true"
+         backupGlobals="false"
+         processIsolation="false"
          verbose="true">
     <testsuites>
         <testsuite name="default">
-            <directory>tests</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -24,4 +26,8 @@
             <directory suffix=".php">src</directory>
         </include>
     </coverage>
+
+    <php>
+        <server name="APP_ENV" value="test"/>
+    </php>
 </phpunit>
