@@ -12,6 +12,7 @@ class Database
     function __construct(){
         // load environment varibles
         $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+        error_log(__DIR__ . "/..");
         try{
             $dotenv->load();
             $dotenv->required("APP_DEBUG");
