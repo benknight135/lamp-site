@@ -10,12 +10,14 @@ use PHPUnit\Framework\TestCase;
 class DatabaseTest extends TestCase
 {
     private $database;
+    private $env;
 
     public function setUp(): void {
-        // TODO find out why $_ENV doesn't work here
-        $env = new Env();
+        $this->env = new Env();
+        $this->env->load();
         $this->database = new Database(
-            $env->db_host, $env->db_user, $env->db_pass, $env->db_name);
+            $this->env->db_host, $this->env->db_user,
+            $this->env->db_pass, $this->env->db_name);
     }
 
     public function testConnection(): void {

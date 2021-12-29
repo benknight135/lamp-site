@@ -10,42 +10,37 @@ class Env
     public $db_pass;
     public $db_name;
 
-    function __construct(){
+    function load(){
         $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
-        $this->app_debug = "";
-        $this->db_host = "";
-        $this->db_user = "";
-        $this->db_pass = "";
-        $this->db_name = "";
         $dotenv->safeload();
-        if (!array_key_exists('APP_DEBUG', $_ENV)){
+        if (!array_key_exists('APP_DEBUG', $_SERVER)){
             throw new Exception("Missing APP_DEBUG environment variable");
         }
-        $this->app_debug = $_ENV['APP_DEBUG'];
+        $this->app_debug = $_SERVER['APP_DEBUG'];
         if ($this->app_debug === 'true'){
             // load database variable from .env
-            if (!array_key_exists('DB_HOST', $_ENV)){
+            if (!array_key_exists('DB_HOST', $_SERVER)){
             throw new Exception("Missing DB_HOST environment variable");
             }
-            $this->db_host = $_ENV["DB_HOST"];
-            if (!array_key_exists('DB_USERNAME', $_ENV)){
+            $this->db_host = $_SERVER["DB_HOST"];
+            if (!array_key_exists('DB_USERNAME', $_SERVER)){
             throw new Exception("Missing DB_USERNAME environment variable");
             }
-            $this->db_user = $_ENV["DB_USERNAME"];
-            if (!array_key_exists('DB_PASSWORD', $_ENV)){
+            $this->db_user = $_SERVER["DB_USERNAME"];
+            if (!array_key_exists('DB_PASSWORD', $_SERVER)){
             throw new Exception("Missing DB_PASSWORD environment variable");
             }
-            $this->db_pass = $_ENV["DB_PASSWORD"];
-            if (!array_key_exists('DB_DATABASE', $_ENV)){
+            $this->db_pass = $_SERVER["DB_PASSWORD"];
+            if (!array_key_exists('DB_DATABASE', $_SERVER)){
             throw new Exception("Missing DB_DATABASE environment variable");
             }
-            $this->db_name = $_ENV["DB_DATABASE"];
+            $this->db_name = $_SERVER["DB_DATABASE"];
         } else {
             // parse database varaibles from cleardb url
-            if (!array_key_exists('CLEARDB_DATABASE_URL', $_ENV)){
+            if (!array_key_exists('CLEARDB_DATABASE_URL', $_SERVER)){
                 throw new Exception("Missing CLEARDB_DATABASE_URL environment variable");
             }
-            $url = parse_url($_ENV["CLEARDB_DATABASE_URL"]);
+            $url = parse_url($_SERVER["CLEARDB_DATABASE_URL"]);
             if (!array_key_exists('host', $url)){
             throw new Exception("Missing 'host' in database url");
             }
