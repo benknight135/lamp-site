@@ -1,6 +1,7 @@
 <?php
 
 use LampSite\Database;
+use LampSite\Env;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -9,15 +10,14 @@ use PHPUnit\Framework\TestCase;
 class DatabaseTest extends TestCase
 {
     private $database;
+    private $env;
 
     public function setUp(): void {
-        // TODO find out why $_ENV doesn't work here
-        $db_host = $_SERVER["DB_HOST"];
-        $db_user = $_SERVER["DB_USERNAME"];
-        $db_pass = $_SERVER["DB_PASSWORD"];
-        $db_name = $_SERVER["DB_DATABASE"];
+        $this->env = new Env();
+        $this->env->load();
         $this->database = new Database(
-            $db_host, $db_user, $db_pass, $db_name);
+            $this->env->db_host, $this->env->db_user,
+            $this->env->db_pass, $this->env->db_name);
     }
 
     public function testConnection(): void {
