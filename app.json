@@ -1,0 +1,6 @@
+{
+    "name": "Lampsite on Heroku",
+    "description": "Sample repository for developing and deploying LAMP stack website. ",
+    "repository": "https://github.com/benknight135/lamp-site",
+    "addons": []
+}

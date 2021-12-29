@@ -1,8 +1,7 @@
 <?php
-declare(strict_types=1);
-require_once('vendor/autoload.php');
+require_once('../vendor/autoload.php');
 
-$env = new LampSite\Env();
+$env = new \LampSite\Env();
 $env->load();
 
 echo '<link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico"/>';
@@ -16,7 +15,7 @@ header('Pragma: no-cache');
 echo "<h1>Welcome to LAMP site</h1>";
 
 // Initalise database
-$database = new LampSite\Database(
+$database = new \LampSite\Database(
   $env->db_host, $env->db_user, $env->db_pass, $env->db_name);
 
 // Connect to database
