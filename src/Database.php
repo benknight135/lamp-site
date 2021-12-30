@@ -25,6 +25,7 @@ class Database
         array_push($this->db_tables, new DbTableClickCounts());
 
         $this->_connect();
+        $this->_dropTable("ClickCounts");
         $this->_createTables();
     }
 

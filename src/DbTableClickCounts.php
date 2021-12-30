@@ -12,7 +12,12 @@ class DbTableClickCounts extends DbTable
                 `user` varchar(30) NOT NULL,
                 `count` int NOT NULL,
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+            INSERT INTO `ClickCounts` (
+                `user`, `count`
+            ) VALUES (
+                `guest`, `0`
+            );";
         parent::__construct($name, $_create_table_sql);
     }
 }

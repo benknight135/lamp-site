@@ -5,7 +5,7 @@
       $.ajax({
         type: 'POST',
         data:{
-          name: "Foo",
+          name: "guest",
         },
         url: 'api/database.php',
         success: function(data) {
