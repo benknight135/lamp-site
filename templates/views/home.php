@@ -5,7 +5,7 @@
       $.ajax({
         type: 'POST',
         data:{
-          name: "guest",
+          name: "Guest",
         },
         url: 'api/database.php',
         success: function(data) {
@@ -28,7 +28,7 @@
         <h2>Database is connected</h2>
         <button id="btn-db-increment-count">Click Me</button>
         <p>Db click count: 
-          <span id="lbl-db-count"><?php echo $db->getCount(); ?></span>
+          <span id="lbl-db-count"><?php echo $db->getCount("Guest"); ?></span>
         </p>
       <?php else: ?>
         <h2>Database failed to connect</h2>

@@ -25,7 +25,7 @@ class Database
         array_push($this->db_tables, new DbTableClickCounts());
 
         $this->_connect();
-        $this->_dropTable("ClickCounts");
+        //$this->_dropTable("ClickCounts");
         $this->_createTables();
     }
 
@@ -56,15 +56,24 @@ class Database
         }
         $create_success = true;
         foreach ($this->db_tables as $db_table){
-            $sql = $db_table->getCreateTableSql();
+            $create_sql = $db_table->getCreateTableSql();
+            $data_sql = $db_table->getFillDataSql();
             $table_name = $db_table->getName();
             if (!$this->_tableExists($table_name)){
                 // create table if it doesn't already exist
-                $res = $this->_conn->query($sql);
+                $res = $this->_conn->query($create_sql);
                 if ($res === false){
                     error_log($this->_conn->error, 0);
                     $create_success = false;
                     break;
+                }
+                if ($data_sql !== ""){
+                    $res = $this->_conn->query($data_sql);
+                    if ($res === false){
+                        error_log($this->_conn->error, 0);
+                        $create_success = false;
+                        break;
+                    }
                 }
             }
         }
@@ -76,8 +85,8 @@ class Database
             throw new Exception("Database is not connected!");
         }
         $sql = "SELECT * FROM information_schema.tables ";
-        $sql = $sql . "WHERE table_schema = '" . $this->db_name . "' ";
-        $sql = $sql . "AND table_name = '" . $table_name . "' LIMIT 1;";
+        $sql .= "WHERE table_schema = '" . $this->db_name . "' ";
+        $sql .= "AND table_name = '" . $table_name . "' LIMIT 1;";
         $res = $this->_conn->query($sql);
         return $res->num_rows > 0;
     }
@@ -118,8 +127,46 @@ class Database
         return $res;
     }
 
-    public function getCount(): int {
-        return 0;
+    public function incrementCount($user): bool {
+        if (!$this->isConnected()){
+            throw new Exception("Database is not connected!");
+        }
+        $current_count = $this->getCount($user);
+        if ($current_count < 0){
+            return false;
+        }
+        return $this->setCount($user, $current_count + 1);
+    }
+
+    public function setCount($user, $count): bool {
+        if (!$this->isConnected()){
+            throw new Exception("Database is not connected!");
+        }
+        $sql = "UPDATE `ClickCounts` SET `CountValue` = " . strval($count) . " WHERE `User` = '" . $user . "';";
+        $res = $this->_conn->query($sql);
+        if ($res !== true) {
+            error_log($conn->error, 0);
+        }
+        return true;
+    }
+
+    public function getCount($user): int {
+        if (!$this->isConnected()){
+            throw new Exception("Database is not connected!");
+        }
+        $sql = "SELECT * FROM `ClickCounts` WHERE `User` = '" . $user . "';";
+        $res = $this->_conn->query($sql);
+        if ($res->num_rows <= 0) {
+            error_log("SQL query returned no results", 0);
+            return -1;
+        }
+        if ($res->num_rows != 1) {
+            error_log("SQL query requires exactly 1 result to match conditions", 0);
+            return -1;
+        }
+        $first_res = $res->fetch_assoc();
+        $count_value = $first_res["CountValue"];
+        return intval($count_value);
     }
 
     public static function getInstance()

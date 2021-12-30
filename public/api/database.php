@@ -5,15 +5,19 @@ if (array_key_exists('name', $_POST)){
     $name = $_POST['name'];
     if ($name == null) {
         echo "NA";
-        return;
+        die();
     }
     $db = LampSite\Database::getInstance(); 
     if ($db->isConnected()){
-        echo "$name";
-        return;
+        if ($db->incrementCount($name)){
+            echo strval($db->getCount($name));
+            die();
+        }
+        echo "NA";
+        die();
     }
     echo "NA";
-    return;
+    die();
 }
 echo "NA";
-return;
+die();
