@@ -1,7 +1,6 @@
 <?php
 
 use LampSite\Database;
-use LampSite\Env;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,17 +9,12 @@ use PHPUnit\Framework\TestCase;
 class DatabaseTest extends TestCase
 {
     private $database;
-    private $env;
 
     public function setUp(): void {
-        $this->env = new Env();
-        $this->env->load();
-        $this->database = new Database(
-            $this->env->db_host, $this->env->db_user,
-            $this->env->db_pass, $this->env->db_name);
+        $this->database = Database::getInstance();
     }
 
     public function testConnection(): void {
-        $this->assertTrue($this->database->connect());
+        $this->assertTrue($this->database->isConnected());
     }
 }
