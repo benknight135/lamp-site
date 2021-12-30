@@ -50,10 +50,10 @@ class ViewTemplate
         $favicon_image_file = $this->favicon_image_file;
         $favicon_image_type = $this->favicon_image_type;
         $stylesheets = $this->stylesheets;
-        include("../templates/head.php");
+        include(__DIR__ . "/../templates/head.php");
     }
 
     private function _footer(){
-        include("../templates/footer.php");
+        include(__DIR__ . "/../templates/footer.php");
     }
 }
