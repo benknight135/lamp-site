@@ -12,6 +12,7 @@ class Database
     private string $username;
     private string $password;
     private string $db_name;
+    private array $db_tables;
     
     public function __construct() {
         $env = (EnvLoad::getInstance())->getEnv();
@@ -19,14 +20,12 @@ class Database
         $this->username = $env->db_user;
         $this->password = $env->db_pass;
         $this->db_name = $env->db_name;
+
+        $this->db_tables = array();
+        array_push($this->db_tables, new DbTableClickCounts());
+
         $this->_connect();
-        $this->_createTableIfDiffOrMissing(
-            "ClickCounts",
-            "id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            user VARCHAR(30) NOT NULL,
-            count INT(6) NOT NULL"
-        );
-        $this->_tableGetSchema("ClickCounts");
+        $this->_createTables();
     }
 
     private function _connect(): bool {
@@ -50,23 +49,25 @@ class Database
         return $this->_conn->ping();
     }
 
-    private function _createTableIfDiffOrMissing($table_name, $table_schema): bool{
+    private function _createTables(): bool {
         if (!$this->isConnected()){
             throw new Exception("Database is not connected!");
         }
-        if (!$this->_tableExists($table_name)){
-            $sql = "CREATE TABLE " . $table_name . " ";
-            $sql = $sql . "(" . $table_schema . ") IF NOT EXISTS;";
-            error_log($sql, 0);
-            $res = $this->_conn->query($sql);
-            if ($res === false){
-                error_log($this->_conn->error, 0);
-            } else {
-                error_log("table creation success", 0);
+        $create_success = true;
+        foreach ($this->db_tables as $db_table){
+            $sql = $db_table->getCreateTableSql();
+            $table_name = $db_table->getName();
+            if (!$this->_tableExists($table_name)){
+                // create table if it doesn't already exist
+                $res = $this->_conn->query($sql);
+                if ($res === false){
+                    error_log($this->_conn->error, 0);
+                    $create_success = false;
+                    break;
+                }
             }
-            return $res;
         }
-        return false;
+        return $create_success;
     }
 
     private function _tableExists($table_name): bool{
@@ -80,14 +81,11 @@ class Database
         return $res->num_rows > 0;
     }
 
-    private function _tableGetSchema($table_name): string{
+    private function _getTableSchema($table_name): string{
         if (!$this->isConnected()){
             throw new Exception("Database is not connected!");
         }
-        $sql = "SELECT * FROM information_schema.tables ";
-        $sql = $sql . "WHERE table_schema = '" . $this->db_name . "' ";
-        $sql = $sql . "AND table_name = '" . $table_name . "';";
-        error_log($sql, 0);
+        $sql = "SHOW CREATE TABLE " . $table_name . ";";
         $res = $this->_conn->query($sql);
         if ($res === False){
             error_log($this->_conn->error, 0);
@@ -97,15 +95,26 @@ class Database
             error_log("SQL query returned no results", 0);
             return "";
         }
-        $schema = "";
-        while($row = $res->fetch_assoc()) {
-            error_log(array_keys($row), 0);
+        if ($res->num_rows != 1) {
+            error_log("SQL query requires exactly 1 result to match conditions", 0);
+            return "";
         }
+        $first_res = $res->fetch_assoc();
+        $create_sql = $first_res["Create Table"];
+        // remove new lines and tabs
+        $create_sql = str_replace(array("\n", "\r", "\t"), '', $create_sql);
+        // replace double or more spaces with single space
+        $create_sql = preg_replace('/ +/', ' ', $create_sql);
+        return $create_sql;
     }
 
-    private function _tableDiffSchema($table, $schema): bool {
-        $current_schema = $this->_tableGetSchema($table);
-        return strcmp($current_schema, $schema);
+    private function _dropTable($table_name): bool {
+        if (!$this->isConnected()){
+            throw new Exception("Database is not connected!");
+        }
+        $sql = "DROP TABLE IF EXISTS " . $table_name . ";";
+        $res = $this->_conn->query($sql);
+        return $res;
     }
 
     public function getCount(): int {
