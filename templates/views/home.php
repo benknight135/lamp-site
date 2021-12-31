@@ -20,19 +20,22 @@
   <div class="w3-opacity">
     <header class="w3-center w3-margin-bottom">
       <h1>Welcome to LAMP site</h1>
-
-      <?php
-      require_once(__DIR__ . '/../../vendor/autoload.php');
-      $db = LampSite\Database::getInstance(); 
-      if ($db->isConnected()): ?>
-        <h2>Database is connected</h2>
-        <button id="btn-db-increment-count">Click Me</button>
-        <p>Db click count: 
-          <span id="lbl-db-count"><?php echo $db->getCount("guest"); ?></span>
-        </p>
-      <?php else: ?>
-        <h2>Database failed to connect</h2>
-      <?php endif; unset($db); ?>
     </header>
+  </div>
+</div>
+<div class="w3-content" style="max-width:1500px">
+  <div class="w3-opacity w3-center">
+    <?php
+    require_once(__DIR__ . '/../../vendor/autoload.php');
+    $db = LampSite\Database::getInstance(); 
+    if ($db->isConnected()): ?>
+      <h2>Database is connected</h2>
+      <button id="btn-db-increment-count">Click Me</button>
+      <p>Db click count: 
+        <span id="lbl-db-count"><?php echo $db->getCount("guest"); ?></span>
+      </p>
+    <?php else: ?>
+      <h2>Database failed to connect</h2>
+    <?php endif; unset($db); ?>
   </div>
 </div>

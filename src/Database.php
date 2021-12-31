@@ -25,6 +25,7 @@ class Database
         array_push($this->db_tables, new DbTableUsers());
 
         $this->_connect();
+        $this->_dropTable("users");
         $this->_createTables();
     }
 
@@ -166,6 +167,23 @@ class Database
         $first_res = $res->fetch_assoc();
         $count_value = $first_res["click_count"];
         return intval($count_value);
+    }
+
+    public function isValidCredentials($username, $password){
+        if (!$this->isConnected()){
+            throw new \Exception("Database is not connected!");
+        }
+        $sql = "SELECT * FROM `users` WHERE `username` = '" . $username . "' AND `password` = '". $password . "';";
+        $res = $this->_conn->query($sql);
+        if ($res->num_rows <= 0) {
+            error_log("SQL query returned no results", 0);
+            return -1;
+        }
+        if ($res->num_rows != 1) {
+            error_log("SQL query requires exactly 1 result to match conditions", 0);
+            return -1;
+        }
+        return true;
     }
 
     public static function getInstance()

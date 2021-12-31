@@ -15,12 +15,14 @@ class DbTableUsers extends DbTable
                 `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`)
             );";
+        $guest_username = "guest";
+        $guest_password = password_hash("guest", PASSWORD_DEFAULT);
         $_fill_data_sql = "INSERT INTO `users` (
                     `username`,
                     `password`
                 ) VALUES (
-                    'guest',
-                    'guest'
+                    '" . $guest_username . "',
+                    '" . $guest_password . "'
                 );";
         parent::__construct($name, $_create_table_sql, $_fill_data_sql);
     }
