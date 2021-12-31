@@ -6,18 +6,17 @@ namespace LampSite;
 class DbTableClickCounts extends DbTable
 {
     public function __construct() {
-        $name = "ClickCounts";
-        $_create_table_sql = "CREATE TABLE `ClickCounts` (
-                `ID` int unsigned NOT NULL AUTO_INCREMENT,
-                `User` varchar(30) NOT NULL,
-                `CountValue` int NOT NULL,
-                PRIMARY KEY (`id`)
+        $name = "click_count";
+        $_create_table_sql = "CREATE TABLE `click_count` (
+                `id` int unsigned NOT NULL AUTO_INCREMENT,
+                `user_id` int FOREIGN KEY REFERENCES `users`(`id`) NOT NULL UNIQUE,
+                `count_value` int NOT NULL
             );";
-        $_fill_data_sql = "INSERT INTO `ClickCounts` (
-                `User`,
-                `CountValue`
+        $_fill_data_sql = "INSERT INTO `click_count` (
+                `user`,
+                `count_value`
             ) VALUES (
-                'Guest',
+                'guest',
                 0
             );";
         parent::__construct($name, $_create_table_sql, $_fill_data_sql);

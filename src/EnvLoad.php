@@ -42,19 +42,19 @@ class EnvLoad
             }
             $url = parse_url($_SERVER["CLEARDB_DATABASE_URL"]);
             if (!array_key_exists('host', $url)){
-            throw new Exception("Missing 'host' in database url");
+                throw new Exception("Missing 'host' in database url");
             }
             $this->_env->db_host = $url["host"];
             if (!array_key_exists('user', $url)){
-            throw new Exception("Missing 'user' in database url");
+                throw new Exception("Missing 'user' in database url");
             }
             $this->_env->db_user = $url["user"];
             if (!array_key_exists('pass', $url)){
-            throw new Exception("Missing 'pass' in database url");
+                throw new Exception("Missing 'pass' in database url");
             }
             $this->_env->db_pass = $url["pass"];
             if (!array_key_exists('path', $url)){
-            throw new Exception("Missing 'path' in database url");
+                throw new Exception("Missing 'path' in database url");
             }
             $this->_env->db_name = substr($url["path"], 1);
         }
