@@ -1,5 +1,5 @@
 <?php
-    require_once('../vendor/autoload.php');
+    require_once(__DIR__ . '/../vendor/autoload.php');
 
     // start storing data in output buffer
     // to avoid rendering until it's knwon to be valid
@@ -59,34 +59,34 @@
         }
     }
 
-    function render_api_request(){
-        try {
-            render_api_header();
-            // TODO
-            echo "thing";
-        } catch (Exception $e) {
-            render_internal_server_error();
-        }
-    }
-
     try{
         // parse input url to get url path
         $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $uri = explode( '/', $url );
-        error_log($url);
-        error_log($uri[0]);
-        error_log($uri[1]);
         
         // create view based on url
         $known_url = false;
         if ($url === '/') {
             $known_url = true;
             render_view_template(
-                "Home", __DIR__ . '/../templates/views/home.php');
-        } else if ($uri[1] === 'api') {
-            $known_url = true;
-            // process data for api database call
-            render_api_request();
+                "Home", __DIR__ . '/../templates/views/home.php');    
+        }
+        if ($url === '/api/count'){
+            $request_method = $_SERVER["REQUEST_METHOD"];
+            if ($request_method == 'GET' || $request_method == 'POST'){
+                $known_url = true;
+                // process data for api database call
+                try {
+                    render_api_header();
+                    $template_file = __DIR__ . '/../templates/api/count.php';
+                    if (!is_readable($template_file)) {
+                        throw new \Exception("Failed to find template api file");
+                    }
+                    require($template_file);
+                } catch (Exception $e) {
+                    render_internal_server_error();
+                }
+            }
         }
         
         // show 'page not found' if no view was found for that url
