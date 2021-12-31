@@ -32,15 +32,15 @@ function post_login(){
         ]);
         return $response;
     }
-    if (!$db->isValidCredentials($username, $password)){
-        $response['status_code_header'] = 'HTTP/1.1 403 Forbidden';
+    if (!$db->addUser($username, $password)){
+        $response['status_code_header'] = 'HTTP/1.1 500 Internal Server Error';
         $response['body'] = json_encode([
-            'error' => 'Username or password is incorrect'
+            'error' => 'Failed to add user'
         ]);
         return $response;
     }
     $response['status_code_header'] = 'HTTP/1.1 200 OK';
-    header('Location: index.php');
+    $response['body'] = json_encode($new_count);
     return $response;
 }
 

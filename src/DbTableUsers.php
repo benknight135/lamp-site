@@ -16,7 +16,7 @@ class DbTableUsers extends DbTable
                 PRIMARY KEY (`id`)
             );";
         $guest_username = "guest";
-        $guest_password = password_hash("guest", PASSWORD_DEFAULT);
+        $guest_password = password_hash("guest", PASSWORD_BCRYPT);
         $_fill_data_sql = "INSERT INTO `users` (
                     `username`,
                     `password`

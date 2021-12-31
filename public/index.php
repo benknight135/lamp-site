@@ -59,6 +59,18 @@
         }
     }
 
+    function render_api($request_method, $template_file){
+        try {
+            render_api_header();
+            if (!is_readable($template_file)) {
+                throw new \Exception("Failed to find template api file");
+            }
+            require($template_file);
+        } catch (Exception $e) {
+            render_internal_server_error();
+        }
+    }
+
     try{
         // parse input url to get url path
         $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
@@ -69,22 +81,32 @@
         if ($url === '/') {
             $known_url = true;
             render_view_template(
-                "Home", __DIR__ . '/../templates/views/home.php');    
+                "Home", __DIR__ . '/../templates/views/home.php');
         }
-        if ($url === '/api/count'){
-            $request_method = $_SERVER["REQUEST_METHOD"];
-            if ($request_method == 'GET' || $request_method == 'POST'){
-                $known_url = true;
-                // process data for api database call
-                try {
-                    render_api_header();
-                    $template_file = __DIR__ . '/../templates/api/count.php';
-                    if (!is_readable($template_file)) {
-                        throw new \Exception("Failed to find template api file");
+        if ($url === '/login'){
+            $known_url = true;
+            render_view_template(
+                "Login", __DIR__ . '/../templates/views/login.php');
+        }
+        if ($url === '/register'){
+            $known_url = true;
+            render_view_template(
+                "Register", __DIR__ . '/../templates/views/register.php');
+        }
+        if (count($uri) > 1 ){
+            if ($uri[1] === 'api'){
+                $request_method = $_SERVER["REQUEST_METHOD"];
+                if ($url === '/api/count'){
+                    if ($request_method == 'GET' || $request_method == 'POST'){
+                        $known_url = true;
+                        render_api($request_method, __DIR__ . '/../templates/api/count.php');
                     }
-                    require($template_file);
-                } catch (Exception $e) {
-                    render_internal_server_error();
+                }
+                if ($url === '/api/login'){
+                    if ($request_method == 'POST'){
+                        $known_url = true;
+                        render_api($request_method, __DIR__ . '/../templates/api/login.php');
+                    }
                 }
             }
         }

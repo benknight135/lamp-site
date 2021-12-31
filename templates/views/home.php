@@ -6,6 +6,7 @@
         type: 'POST',
         data:{
           username: "guest",
+          password: "guest"
         },
         url: 'api/count',
         success: function(data) {
@@ -32,7 +33,9 @@
       <h2>Database is connected</h2>
       <button id="btn-db-increment-count">Click Me</button>
       <p>Db click count: 
-        <span id="lbl-db-count"><?php echo $db->getCount("guest"); ?></span>
+        <span id="lbl-db-count">
+          <?php echo $db->getCount("guest", "guest"); ?>
+        </span>
       </p>
     <?php else: ?>
       <h2>Database failed to connect</h2>

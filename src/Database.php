@@ -8,30 +8,30 @@ class Database
     private static $_instance = NULL;
 
     private $_conn = NULL;
-    private string $host;
-    private string $username;
-    private string $password;
+    private string $db_host;
+    private string $db_user;
+    private string $db_pass;
     private string $db_name;
     private array $db_tables;
     
     public function __construct() {
         $env = (EnvLoad::getInstance())->getEnv();
-        $this->host = $env->db_host;
-        $this->username = $env->db_user;
-        $this->password = $env->db_pass;
+        $this->db_host = $env->db_host;
+        $this->db_user = $env->db_user;
+        $this->db_pass = $env->db_pass;
         $this->db_name = $env->db_name;
 
         $this->db_tables = array();
         array_push($this->db_tables, new DbTableUsers());
 
         $this->_connect();
-        $this->_dropTable("users");
+        //$this->_dropTable("users");
         $this->_createTables();
     }
 
     private function _connect(): bool {
         if (!$this->isConnected()){
-            $this->_conn = new \mysqli($this->host, $this->username, $this->password, $this->db_name);
+            $this->_conn = new \mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
             if ($this->_conn->connect_errno) {
                 error_log("Database connection failed: " . $this->_conn->connect_error, 0);
                 return false;
@@ -127,22 +127,29 @@ class Database
         return $res;
     }
 
-    public function incrementCount($username): bool {
+    public function incrementCount($username, $password): bool {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $current_count = $this->getCount($username);
+        if (!$this->isValidCredentials($username, $password)){
+            return false;
+        }
+        $current_count = $this->getCount($username, $password);
         if ($current_count < 0){
             return false;
         }
-        return $this->setCount($username, $current_count + 1);
+        return $this->setCount($username, $password, $current_count + 1);
     }
 
-    public function setCount($username, $count): bool {
+    public function setCount($username, $password, $count): bool {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $sql = "UPDATE `users` SET `click_count` = " . strval($count) . " WHERE `username` = '" . $username . "';";
+        if (!$this->isValidCredentials($username, $password)){
+            return false;
+        }
+        $sql = "UPDATE `users` SET `click_count` = " . strval($count) . " ";
+        $sql .= "WHERE `username` = '" . $username . "';";
         $res = $this->_conn->query($sql);
         if ($res !== true) {
             error_log($conn->error, 0);
@@ -150,11 +157,15 @@ class Database
         return true;
     }
 
-    public function getCount($username): int {
+    public function getCount($username, $password): int {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $sql = "SELECT * FROM `users` WHERE `username` = '" . $username . "';";
+        if (!$this->isValidCredentials($username, $password)){
+            return -1;
+        }
+        $sql = "SELECT * FROM `users` ";
+        $sql .= "WHERE `username` = '" . $username . "';";
         $res = $this->_conn->query($sql);
         if ($res->num_rows <= 0) {
             error_log("SQL query returned no results", 0);
@@ -169,21 +180,38 @@ class Database
         return intval($count_value);
     }
 
+    public function addUser($username, $password){
+        $hashed_pass = password_hash($password, PASSWORD_BCRYPT);
+        if (!$this->isConnected()){
+            throw new \Exception("Database is not connected!");
+        }
+        $sql = "INSERT INTO `users` (`username`, `password`) ";
+        $sql .= "VALUES ('" . $username . "', '". $hashed_pass . "');";
+        $res = $this->_conn->query($sql);
+        if ($res !== true) {
+            error_log($conn->error, 0);
+        }
+        return true;
+    }
+
     public function isValidCredentials($username, $password){
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $sql = "SELECT * FROM `users` WHERE `username` = '" . $username . "' AND `password` = '". $password . "';";
+        $sql = "SELECT * FROM `users` ";
+        $sql .= "WHERE `username` = '" . $username . "';";
         $res = $this->_conn->query($sql);
         if ($res->num_rows <= 0) {
             error_log("SQL query returned no results", 0);
-            return -1;
+            return false;
         }
         if ($res->num_rows != 1) {
             error_log("SQL query requires exactly 1 result to match conditions", 0);
-            return -1;
+            return false;
         }
-        return true;
+        $first_res = $res->fetch_assoc();
+        $pass_in_db = $first_res["password"];
+        return password_verify($password, $pass_in_db);;
     }
 
     public static function getInstance()
