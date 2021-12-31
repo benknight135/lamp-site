@@ -22,10 +22,9 @@ class Database
         $this->db_name = $env->db_name;
 
         $this->db_tables = array();
-        array_push($this->db_tables, new DbTableClickCounts());
+        array_push($this->db_tables, new DbTableUsers());
 
         $this->_connect();
-        //$this->_dropTable("ClickCounts");
         $this->_createTables();
     }
 
@@ -127,22 +126,22 @@ class Database
         return $res;
     }
 
-    public function incrementCount($user): bool {
+    public function incrementCount($username): bool {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $current_count = $this->getCount($user);
+        $current_count = $this->getCount($username);
         if ($current_count < 0){
             return false;
         }
-        return $this->setCount($user, $current_count + 1);
+        return $this->setCount($username, $current_count + 1);
     }
 
-    public function setCount($user, $count): bool {
+    public function setCount($username, $count): bool {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $sql = "UPDATE `ClickCounts` SET `CountValue` = " . strval($count) . " WHERE `User` = '" . $user . "';";
+        $sql = "UPDATE `users` SET `click_count` = " . strval($count) . " WHERE `username` = '" . $username . "';";
         $res = $this->_conn->query($sql);
         if ($res !== true) {
             error_log($conn->error, 0);
@@ -150,11 +149,11 @@ class Database
         return true;
     }
 
-    public function getCount($user): int {
+    public function getCount($username): int {
         if (!$this->isConnected()){
             throw new \Exception("Database is not connected!");
         }
-        $sql = "SELECT * FROM `ClickCounts` WHERE `User` = '" . $user . "';";
+        $sql = "SELECT * FROM `users` WHERE `username` = '" . $username . "';";
         $res = $this->_conn->query($sql);
         if ($res->num_rows <= 0) {
             error_log("SQL query returned no results", 0);
@@ -165,7 +164,7 @@ class Database
             return -1;
         }
         $first_res = $res->fetch_assoc();
-        $count_value = $first_res["CountValue"];
+        $count_value = $first_res["click_count"];
         return intval($count_value);
     }
 

@@ -2,15 +2,15 @@
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
 function post_increment_count(){
-    if (!array_key_exists('user', $_POST)){
+    if (!array_key_exists('username', $_POST)){
         $response['status_code_header'] = 'HTTP/1.1 422 Unprocessable Entity';
         $response['body'] = json_encode([
             'error' => 'Invalid input'
         ]);
         return $response;
     }
-    $user = $_POST['user'];
-    if ($user == null) {
+    $username = $_POST['username'];
+    if ($username == null) {
         $response['status_code_header'] = 'HTTP/1.1 422 Unprocessable Entity';
         $response['body'] = json_encode([
             'error' => 'Invalid input'
@@ -25,14 +25,14 @@ function post_increment_count(){
         ]);
         return $response;
     }
-    if (!$db->incrementCount($user)){
+    if (!$db->incrementCount($username)){
         $response['status_code_header'] = 'HTTP/1.1 500 Internal Server Error';
         $response['body'] = json_encode([
             'error' => 'Invalid input'
         ]);
         return $response;
     }
-    $new_count = $db->getCount($user);
+    $new_count = $db->getCount($username);
     if ($new_count < 0){
         $response['status_code_header'] = 'HTTP/1.1 500 Internal Server Error';
         $response['body'] = json_encode([
@@ -46,15 +46,15 @@ function post_increment_count(){
 }
 
 function get_count(){
-    if (!array_key_exists('user', $_GET)){
+    if (!array_key_exists('username', $_GET)){
         $response['status_code_header'] = 'HTTP/1.1 422 Unprocessable Entity';
         $response['body'] = json_encode([
             'error' => 'Invalid input'
         ]);
         return $response;
     }
-    $user = $_GET['user'];
-    if ($user == null) {
+    $username = $_GET['username'];
+    if ($username == null) {
         $response['status_code_header'] = 'HTTP/1.1 422 Unprocessable Entity';
         $response['body'] = json_encode([
             'error' => 'Invalid input'
@@ -69,7 +69,7 @@ function get_count(){
         ]);
         return $response;
     }
-    $new_count = $db->getCount($user);
+    $new_count = $db->getCount($username);
     if ($new_count < 0){
         $response['status_code_header'] = 'HTTP/1.1 500 Internal Server Error';
         $response['body'] = json_encode([
