@@ -24,7 +24,10 @@ class ViewTemplate
         echo "<html>";
         $this->_head();
         echo "<body>";
-        include($this->body_file);
+        if (!is_readable($this->body_file)) {
+            throw new \Exception("Failed to find template body file");
+        }
+        require($this->body_file);
         echo "</body>";
         $this->_footer();
         echo "</html>";
@@ -50,10 +53,18 @@ class ViewTemplate
         $favicon_image_file = $this->favicon_image_file;
         $favicon_image_type = $this->favicon_image_type;
         $stylesheets = $this->stylesheets;
-        include(__DIR__ . "/../templates/head.php");
+        $head_template = __DIR__ . "/../templates/head.php";
+        if (!is_readable($head_template)) {
+            throw new \Exception("Failed to find template head file");
+        }
+        require($head_template);
     }
 
     private function _footer(){
-        include(__DIR__ . "/../templates/footer.php");
+        $footer_template = __DIR__ . "/../templates/footer.php";
+        if (!is_readable($footer_template)) {
+            throw new \Exception("Failed to find template footer file");
+        }
+        require($footer_template);
     }
 }
