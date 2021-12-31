@@ -2,5 +2,11 @@
     "name": "Lampsite",
     "description": "Sample repository for developing and deploying LAMP stack website.",
     "repository": "https://github.com/benknight135/lamp-site",
-    "addons": ["cleardb:ignite"]
+    "addons": ["cleardb:ignite"],
+    "env": {
+        "APP_DEBUG": {
+            "description": "Boolean to tell the app if it's in debug mode or production.",
+            "value": "false"
+        }
+    }
 }

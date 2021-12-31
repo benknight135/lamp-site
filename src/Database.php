@@ -52,7 +52,7 @@ class Database
 
     private function _createTables(): bool {
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $create_success = true;
         foreach ($this->db_tables as $db_table){
@@ -82,7 +82,7 @@ class Database
 
     private function _tableExists($table_name): bool{
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $sql = "SELECT * FROM information_schema.tables ";
         $sql .= "WHERE table_schema = '" . $this->db_name . "' ";
@@ -93,7 +93,7 @@ class Database
 
     private function _getTableSchema($table_name): string{
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $sql = "SHOW CREATE TABLE " . $table_name . ";";
         $res = $this->_conn->query($sql);
@@ -120,7 +120,7 @@ class Database
 
     private function _dropTable($table_name): bool {
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $sql = "DROP TABLE IF EXISTS " . $table_name . ";";
         $res = $this->_conn->query($sql);
@@ -129,7 +129,7 @@ class Database
 
     public function incrementCount($user): bool {
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $current_count = $this->getCount($user);
         if ($current_count < 0){
@@ -140,7 +140,7 @@ class Database
 
     public function setCount($user, $count): bool {
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $sql = "UPDATE `ClickCounts` SET `CountValue` = " . strval($count) . " WHERE `User` = '" . $user . "';";
         $res = $this->_conn->query($sql);
@@ -152,7 +152,7 @@ class Database
 
     public function getCount($user): int {
         if (!$this->isConnected()){
-            throw new Exception("Database is not connected!");
+            throw new \Exception("Database is not connected!");
         }
         $sql = "SELECT * FROM `ClickCounts` WHERE `User` = '" . $user . "';";
         $res = $this->_conn->query($sql);
