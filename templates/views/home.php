@@ -5,9 +5,9 @@
       $.ajax({
         type: 'POST',
         data:{
-          name: "Guest",
+          user: "Guest",
         },
-        url: 'api/database.php',
+        url: 'api/count',
         success: function(data) {
             $("#lbl-db-count").text(data);
         }
@@ -21,8 +21,8 @@
     <header class="w3-center w3-margin-bottom">
       <h1>Welcome to LAMP site</h1>
 
-      <?php 
-      require_once('../vendor/autoload.php');
+      <?php
+      require_once(__DIR__ . '/../../vendor/autoload.php');
       $db = LampSite\Database::getInstance(); 
       if ($db->isConnected()): ?>
         <h2>Database is connected</h2>
